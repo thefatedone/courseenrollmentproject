@@ -5,5 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
-public record TeacherCreationDTO(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String subject, @NotNull Date dateOfBirth) {
+public record TeacherCreationDTO(@NotBlank String firstName, @NotBlank String lastName,
+                                 @NotBlank String subject, @NotNull Date dateOfBirth) {
 }

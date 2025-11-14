@@ -14,7 +14,7 @@ public class TeacherValidator {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    public void validateTeacher(TeacherCreationDTO teacherCreationDTO, int teacherId) {
+    public void validateTeacher(TeacherCreationDTO teacherCreationDTO, Integer teacherId) {
 
         Optional<Teacher> t = teacherRepository.findById(teacherId);
 
