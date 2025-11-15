@@ -19,7 +19,7 @@ public class TeacherValidator {
         Optional<Teacher> t = teacherRepository.findById(teacherId);
 
         if (!t.isPresent()) {
-            throw new IllegalArgumentException(teacherId + " already exists");
+            throw new IllegalArgumentException(teacherId + " not exists");
         }
 
     }

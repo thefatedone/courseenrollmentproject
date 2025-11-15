@@ -1,4 +1,4 @@
-package com.alex.enrollment.student.validation;
+package com.alex.enrollment.teacher.validation;
 
 import com.alex.enrollment.teacher.dto.TeacherCreationDTO;
 import com.alex.enrollment.teacher.model.Teacher;
@@ -39,7 +39,7 @@ public class TeacherValidatorTest {
                 () -> teacherValidator.validateTeacher(teacherCreationDTO, teacherId)
         );
 
-        assertEquals("1 already exists", ex.getMessage());
+        assertEquals("1 not exists", ex.getMessage());
     }
 
     @Test
