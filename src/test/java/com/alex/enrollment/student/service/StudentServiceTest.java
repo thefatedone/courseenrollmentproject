@@ -1,5 +1,6 @@
 package com.alex.enrollment.student.service;
 
+import com.alex.enrollment.shared.exception.ResourceNotFoundException;
 import com.alex.enrollment.shared.model.Gender;
 import com.alex.enrollment.student.dto.StudentCreationDTO;
 import com.alex.enrollment.student.dto.StudentDTO;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -56,6 +58,72 @@ public class StudentServiceTest {
         verify(studentRepository, never()).save(any());
         verify(studentMapper, never()).studentToStudentDTO(any());
 
+    }
+
+    @Test
+    public void givenExistingStudent_whenFindStudentById_expectException() {
+
+        when(studentRepository.findById(999)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> studentService.findStudentById(999));
+    }
+
+    @Test
+    public void givenExistingStudent_whenFindStudentById_expectSuccess() throws ResourceNotFoundException {
+
+        Integer id = 1;
+        Student entity = createStudentEntity(1, "Alexander", "Pepanian", "mail@mail.com");
+        StudentDTO dto = createStudentDTO(1, "Alexander", "Pepanian", "mail@mail.com");
+
+        when(studentRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(studentMapper.studentToStudentDTO(entity)).thenReturn(dto);
+
+        StudentDTO result = studentService.findStudentById(id);
+
+        assertEquals("Alexander", result.firstName());
+        assertEquals("Pepanian", result.lastName());
+        assertEquals("mail@mail.com", result.email());
+    }
+
+    @Test
+    public void givenExistingStudent_whenUpdateStudent_expectException() {
+
+        Integer id = 999;
+
+        StudentCreationDTO studentCreationDTO = createStudentCreationDTO("John", "Doe", new Date(), "mail@mail.com");
+        when(studentRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> studentService.updateStudent(id, studentCreationDTO));
+
+    }
+
+    @Test
+    public void givenExistingStudent_whenUpdateStudent_expectSuccess() throws ResourceNotFoundException {
+
+        Integer id = 1;
+
+        StudentCreationDTO creationDTO =
+                createStudentCreationDTO("Saul", "Goodman", new Date(), "mail@mail.com");
+
+        Student existEntity =
+                createStudentEntity(id, "Some", "Lastname", "somelast@mail.com");
+
+        StudentDTO returnDTO =
+                createStudentDTO(id, "Saul", "Goodman", "mail@mail.com");
+
+        doNothing().when(studentValidator).validateStudent(creationDTO, id);
+
+        when(studentRepository.findById(id)).thenReturn(Optional.of(existEntity));
+        when(studentRepository.save(existEntity)).thenReturn(existEntity);
+        when(studentMapper.studentToStudentDTO(existEntity)).thenReturn(returnDTO);
+
+        StudentDTO result = studentService.updateStudent(id, creationDTO);
+
+        assertEquals("Saul", result.firstName());
+        assertEquals("Goodman", result.lastName());
+        assertEquals("mail@mail.com", result.email());
+
+        verify(studentRepository, times(1)).save(existEntity);
     }
 
 
@@ -109,6 +177,16 @@ public class StudentServiceTest {
     private StudentDTO createStudentDTO(Integer id, String name, String lastname, String email) {
         return new StudentDTO(id, name, lastname, email);
     }
+
+    private Student createStudentEntity(Integer id, String name, String lastname, String email) {
+        Student s = new Student();
+        s.setStudentId(id);
+        s.setFirstName(name);
+        s.setLastName(lastname);
+        s.setEmail(email);
+        return s;
+    }
+
 
 
 }
