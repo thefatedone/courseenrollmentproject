@@ -95,7 +95,9 @@ public class StudentServiceTest {
 
         when(studentRepository.findById(999)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> studentService.findStudentById(999));
+        ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class, () -> studentService.findStudentById(999));
+
+        assertEquals("Student with id 999 not found", ex.getMessage());
     }
 
     @Test
@@ -116,15 +118,16 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void givenExistingStudent_whenUpdateStudent_expectException() {
+    public void givenNonExistingStudent_whenUpdateStudent_expectException() {
 
         Integer id = 999;
 
         StudentCreationDTO studentCreationDTO = createStudentCreationDTO("John", "Doe", new Date(), "mail@mail.com");
         when(studentRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> studentService.updateStudent(id, studentCreationDTO));
+        ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class, () -> studentService.updateStudent(id, studentCreationDTO));
 
+        assertEquals("Student with id 999 not found", ex.getMessage());
     }
 
     @Test
@@ -187,7 +190,5 @@ public class StudentServiceTest {
         s.setEmail(email);
         return s;
     }
-
-
 
 }
