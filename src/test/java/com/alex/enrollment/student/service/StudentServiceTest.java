@@ -91,7 +91,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void givenExistingStudent_whenFindStudentById_expectException() {
+    public void givenNonExistingStudent_whenFindStudentById_expectException() {
 
         when(studentRepository.findById(999)).thenReturn(Optional.empty());
 
