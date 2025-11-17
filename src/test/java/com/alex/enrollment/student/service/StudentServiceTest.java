@@ -60,6 +60,36 @@ public class StudentServiceTest {
 
     }
 
+
+    @Test
+    public void givenValidCreateRequest_whenCreatingStudent_expectSuccess() {
+        String name = "John";
+        String lastName = "Doe";
+        String email = "email@email.com";
+        Date dob = new Date();
+        Integer id = 1;
+
+        StudentCreationDTO studentCreationDTO = createStudentCreationDTO(name, lastName, dob, email);
+        Student student = createStudent(id, name, lastName, email, dob);
+        StudentDTO studentDTO = createStudentDTO(id, name, lastName, email);
+
+        doNothing().when(studentValidator).validateStudent(studentCreationDTO, null);
+        when(studentMapper.toStudent(studentCreationDTO)).thenReturn(student);
+        when(studentRepository.save(student)).thenReturn(student);
+        when(studentMapper.studentToStudentDTO(student)).thenReturn(studentDTO);
+
+        StudentDTO result = studentService.createStudent(studentCreationDTO);
+
+        assertEquals(studentDTO.studentId(), result.studentId());
+        assertEquals(studentDTO.firstName(), result.firstName());
+        assertEquals(studentDTO.lastName(), result.lastName());
+        assertEquals(studentDTO.email(), result.email());
+
+        verify(studentMapper, times(1)).toStudent(studentCreationDTO);
+        verify(studentRepository, times(1)).save(any());
+        verify(studentMapper, times(1)).studentToStudentDTO(any());
+    }
+
     @Test
     public void givenExistingStudent_whenFindStudentById_expectException() {
 
@@ -126,35 +156,6 @@ public class StudentServiceTest {
         verify(studentRepository, times(1)).save(existEntity);
     }
 
-
-    @Test
-    public void givenValidCreateRequest_whenCreatingStudent_expectSuccess() {
-        String name = "John";
-        String lastName = "Doe";
-        String email = "email@email.com";
-        Date dob = new Date();
-        Integer id = 1;
-
-        StudentCreationDTO studentCreationDTO = createStudentCreationDTO(name, lastName, dob, email);
-        Student student = createStudent(id, name, lastName, email, dob);
-        StudentDTO studentDTO = createStudentDTO(id, name, lastName, email);
-
-        doNothing().when(studentValidator).validateStudent(studentCreationDTO, null);
-        when(studentMapper.toStudent(studentCreationDTO)).thenReturn(student);
-        when(studentRepository.save(student)).thenReturn(student);
-        when(studentMapper.studentToStudentDTO(student)).thenReturn(studentDTO);
-
-        StudentDTO result = studentService.createStudent(studentCreationDTO);
-
-        assertEquals(studentDTO.studentId(), result.studentId());
-        assertEquals(studentDTO.firstName(), result.firstName());
-        assertEquals(studentDTO.lastName(), result.lastName());
-        assertEquals(studentDTO.email(), result.email());
-
-        verify(studentMapper, times(1)).toStudent(studentCreationDTO);
-        verify(studentRepository, times(1)).save(any());
-        verify(studentMapper, times(1)).studentToStudentDTO(any());
-    }
 
 
 
