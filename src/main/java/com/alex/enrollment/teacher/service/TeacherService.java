@@ -27,14 +27,11 @@ public class TeacherService {
 
     public TeacherDTO createTeacher(TeacherCreationDTO teacherCreationDTO) {
 
+        teacherValidator.validateTeacher(teacherCreationDTO, null);
+
         Teacher teacher = teacherMapper.toTeacher(teacherCreationDTO);
-
         teacher = teacherRepository.save(teacher);
-
-        TeacherDTO teacherDTO = teacherMapper.teachertoTeacherDTO(teacher);
-
-        return teacherDTO;
-
+        return teacherMapper.teachertoTeacherDTO(teacher);
     }
 
     public List<TeacherDTO> getAllTeachers() {
