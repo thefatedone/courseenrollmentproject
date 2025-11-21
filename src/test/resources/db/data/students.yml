@@ -1,0 +1,15 @@
+students:
+  - student_id: 1
+    first_name: John
+    last_name: Doe
+    ed_year: 1
+    date_of_birth: 2007-07-07
+    email: john.doe@email.com
+    gender: MALE
+  - student_id: 2
+    first_name: Jane
+    last_name: Doe
+    ed_year: 3
+    date_of_birth: 2005-07-07
+    email: jane.doe@email.com
+    gender: FEMALE

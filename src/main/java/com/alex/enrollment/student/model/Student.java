@@ -14,6 +14,7 @@ public class Student {
     private Integer studentId;
     private String firstName;
     private String lastName;
+    @Column(name = "ed_year")
     private Integer year;
     private Date dateOfBirth;
     private String email;
