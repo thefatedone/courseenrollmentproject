@@ -184,14 +184,12 @@ public class StudentServiceTest {
     }
 
     private Student createStudentEntity(Integer id, String name, String lastname, String email) {
-
         Student s = new Student();
         s.setStudentId(id);
         s.setFirstName(name);
         s.setLastName(lastname);
         s.setEmail(email);
         return s;
-
     }
 
 }
