@@ -1,0 +1,11 @@
+teachers:
+  - teacher_id: 1
+    first_name: Alexander
+    last_name: Pepanian
+    subject: Accounting
+    date_of_birth: 2006-06-21
+  - teacher_id: 2
+    first_name: John
+    last_name: Doe
+    subject: Computer Science
+    date_of_birth: 2007-07-07
