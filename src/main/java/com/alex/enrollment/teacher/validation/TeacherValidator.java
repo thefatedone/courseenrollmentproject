@@ -16,10 +16,12 @@ public class TeacherValidator {
 
     public void validateTeacher(TeacherCreationDTO teacherCreationDTO, Integer teacherId) {
 
-        Optional<Teacher> t = teacherRepository.findById(teacherId);
+        if (teacherId == null) {
+            return;
+        }
 
-        if (!t.isPresent()) {
-            throw new IllegalArgumentException(teacherId + " not exists");
+        if (!teacherRepository.existsById(teacherId)) {
+            throw new IllegalArgumentException("Teacher with id " + teacherId + " not exists");
         }
 
     }

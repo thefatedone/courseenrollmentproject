@@ -20,11 +20,19 @@ public class Teacher {
     public Teacher() {
     }
 
+    public Teacher(Integer teacherId, String firstName, String lastName, String subject, Date dateOfBirth) {
+        this.teacherId = teacherId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.subject = subject;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public Integer getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(Integer teacherId) {
+    public void setTeacherId() {
         this.teacherId = teacherId;
     }
 
