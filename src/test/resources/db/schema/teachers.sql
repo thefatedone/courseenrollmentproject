@@ -6,4 +6,4 @@ CREATE TABLE teachers(
     last_name VARCHAR(100),
     subject VARCHAR(100),
     date_of_birth DATE
-)
+);

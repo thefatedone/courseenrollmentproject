@@ -1,0 +1,5 @@
+courses:
+  - course_id: 1
+    course_name: Math
+    course_capacity: 50
+    course_teacher: 1
