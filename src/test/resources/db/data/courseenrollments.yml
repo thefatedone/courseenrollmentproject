@@ -1,0 +1,7 @@
+course_enrollment:
+  - enrollment_id: 1
+    enrollment_student_id: 1
+    enrollment_course_id: 2
+    enrollment_start_date: 2025-11-30
+    enrollment_end_date: 2025-12-30
+    enrollment_date: 2026-01-10
