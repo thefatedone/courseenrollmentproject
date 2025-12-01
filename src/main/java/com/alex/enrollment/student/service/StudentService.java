@@ -38,7 +38,12 @@ public class StudentService {
 
         Student newStudent = studentMapper.toStudent(studentCreationDTO);
 
-        newStudent = studentRepository.save(newStudent);
+        try {
+            newStudent = studentRepository.save(newStudent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("Error creating new student", e);
+        }
 
         StudentDTO newStudentDTO = studentMapper.studentToStudentDTO(newStudent);
 
