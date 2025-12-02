@@ -7,21 +7,19 @@ import com.alex.enrollment.student.mapper.StudentMapper;
 import com.alex.enrollment.student.model.Student;
 import com.alex.enrollment.student.repository.StudentRepository;
 import com.alex.enrollment.student.validation.StudentValidator;
-import jakarta.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
 public class StudentService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentService.class);
 
     @Autowired
     private StudentRepository studentRepository;
@@ -34,13 +32,22 @@ public class StudentService {
 
     public StudentDTO createStudent(StudentCreationDTO studentCreationDTO) {
 
+        LOGGER.info(String.format("Received request to create student: %s", studentCreationDTO.toString()));
+
         studentValidator.validateStudent(studentCreationDTO, null);
 
         Student newStudent = studentMapper.toStudent(studentCreationDTO);
 
-        newStudent = studentRepository.save(newStudent);
+        try {
+            newStudent = studentRepository.save(newStudent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("Error creating new student", e);
+        }
 
         StudentDTO newStudentDTO = studentMapper.studentToStudentDTO(newStudent);
+
+        LOGGER.debug(String.format("Created new student with id = %d", newStudentDTO.studentId()));
 
         return newStudentDTO;
     }
