@@ -2,6 +2,7 @@ package com.alex.enrollment.shared.exception;
 
 import com.alex.enrollment.shared.dto.ErrorResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +17,7 @@ public class EnrollmentControllerAdvice {
     public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException e, HttpServletRequest request) {
 
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
-                UUID.randomUUID().toString(),
+                MDC.get("requestId"),
                 HttpStatus.NOT_FOUND,
                 request.getRequestURI(),
                 e.getMessage());
@@ -28,7 +29,7 @@ public class EnrollmentControllerAdvice {
     public ResponseEntity<ErrorResponseDTO> handleIllegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
 
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
-                UUID.randomUUID().toString(),
+                MDC.get("requestId"),
                 HttpStatus.BAD_REQUEST,
                 request.getRequestURI(),
                 e.getMessage());
