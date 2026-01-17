@@ -15,6 +15,6 @@ public class FilterController {
     public String testMDC() {
         log.info("Inside Controller");
         log.info("Request ID: " + MDC.get("requestId"));
-        return "OK";
+        return "Ok";
     }
 }
