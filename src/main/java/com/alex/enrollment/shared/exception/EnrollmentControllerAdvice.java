@@ -36,4 +36,16 @@ public class EnrollmentControllerAdvice {
 
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleException(Exception e, HttpServletRequest request) {
+        e.printStackTrace();
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
+                MDC.get("requestId"),
+                HttpStatus.BAD_REQUEST,
+                request.getRequestURI(),
+                e.getMessage());
+
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+    }
 }
